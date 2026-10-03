@@ -3,20 +3,20 @@ Version 2 (the first one was ass)
 
 ![TuffCalc powered on](./the%20thing.jpg)
 
-It's a calculator. It does calculator stuff. It also plays Snake, Tetris, Flappy Bird, Pong, and a tiny Minecraft clone, takes notes, checks your Discord DMs, talks to an AI, and can pop up a fake Wi-Fi login page. You know, normal calculator stuff.
+It's a calculator. It does calculator stuff. It also plays Snake, Tetris, Flappy Bird, Pong, and a tiny Minecraft clone, takes notes, checks your Discord DMs, talks to an AI, and a "few" more things. You know, normal calculator stuff.
 
-Runs on an ESP32 with two SSD1306 OLEDs (one main screen, one "info" screen) wired up behind a real calculator keypad, so from the outside it just looks like a calculator sitting on your desk.
+Runs on an ESP32 with two SSD1306 OLEDs (one main screen, one info screen) wired up behind a real calculator keypad, so from the outside it just looks like a calculator.
 
 ## What it can do
 
 - **Calculator** — the actual point of the thing. Basic arithmetic, history, Ans, exponents, square roots.
-- **Games** — Snake, Tetris, Flappy Bird, Pong (vs a CPU), and a creative-mode Minecraft thing rendered in raycasted white blocks on a 128x64 screen.
-- **Notes** — a little text editor backed by LittleFS, with its own on-screen keyboard.
-- **Wi-Fi** — scan, connect, save networks. Also hosts its own open network (`TuffCalc-Notes`) so you can get notes on/off the device from your phone.
+- **Games** — Snake, Tetris, Flappy Bird, Pong (vs a bot), and a creative-mode Minecraft thing rendered in raycasted white blocks on a 128x64 screen.
+- **Notes** — view the notes you uploaded from your phone organized in folders.
+- **Wi-Fi** — scan, connect, save networks.
 - **Discord** — lists your DMs and lets you read/send messages, through the companion backend server.
 - **AI chat** — ask it stuff, answers come back through the same backend (Groq under the hood).
-- **Portal** — spins up a captive-portal style fake login page over its own AP and logs what gets typed into it. Use this responsibly, on your own stuff only.
-- **Clock, battery %, brightness, auto-off, app PIN lock, OTA updates** — the usual quality-of-life bits.
+- **Evil Portal** — don't ask.
+- **Clock, battery %, brightness, auto-off, app PIN lock, OTA updates** — the usual quality-of-life stuff.
 
 Menus are PIN-protected if you set one (Settings > App PIN).
 
@@ -34,7 +34,7 @@ Menus are PIN-protected if you set one (Settings > App PIN).
 1. Open `main.ino` in Arduino IDE (or PlatformIO).
 2. Install the libraries it needs: `Adafruit_GFX`, `Adafruit_SSD1306`, `ArduinoJson`, plus the ESP32 board package (`WiFi`, `WebServer`, `DNSServer`, `HTTPClient`, `WiFiClientSecure`, `ArduinoOTA`, `LittleFS`, `Preferences` all ship with it).
 3. Edit the settings block near the top of the file:
-   - `HARD_NETS[]` — your Wi-Fi SSID/password so it auto-connects on boot.
+   - `HARD_NETS[]` — your default Wi-Fi SSID/password.
    - `CALC_API_BASE` — the URL where you're running `server.js` (e.g. `http://192.168.1.50:9123`), if you want Discord/AI.
    - `CALC_API_KEY` — a random 32+ character string. Has to match `CALC_API_KEY` on the server side.
    - `OTA_PASSWORD` — change this from `123` to something real if you care about OTA security.
@@ -61,13 +61,12 @@ Env vars:
 | `GROQ_API_KEY` | no | Needed for the AI feature. Leave unset and it just won't work. |
 | `GROQ_MODEL` | no | Defaults to `openai/gpt-oss-20b`. |
 
-Discord is off by default in this copy (`DISCORD_ENABLED = false`) since self-botting a user token is against Discord's ToS — flip that flag and provide `DISCORD_USER_TOKEN` at your own risk if you want to wire it back up.
+Discord is off by default in this copy (`DISCORD_ENABLED = false`) - CAN GET YOU BANNED, but it works.
 
 ### 3. First boot
 
-- The device boots to the calculator screen. Hold Mode or dig into the key combo you set up to reach the hidden menu (Games / Tools / Settings).
-- Set an app PIN in Settings if you don't want people poking around.
-- If Wi-Fi isn't connecting, check Settings > Saved networks or connect to the `TuffCalc-Notes` AP it broadcasts and go from there.
+- The device boots to the calculator screen. Press the MODE key to go to the main menu (Games / Tools / Settings).
+- Default PIN for Discord/AI is 0000.
 
 ## A couple of notes
 
